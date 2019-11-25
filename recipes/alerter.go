@@ -16,7 +16,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/cloudflare/roughtime"
+	"github.com/odrisci/roughtime"
 )
 
 var (

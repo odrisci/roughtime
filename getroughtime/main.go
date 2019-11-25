@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/cloudflare/roughtime"
+	"github.com/odrisci/roughtime"
 	"roughtime.googlesource.com/roughtime.git/go/config"
 )
 
@@ -36,7 +36,7 @@ func main() {
 	roughtime.SetLogger(logger)
 
 	if *getVersion {
-		logger.Printf("getroughtime %s (%s) built %s\n", Version, GoVersion, BuildTime)
+		logger.Printf("odrisci getroughtime %s (%s) built %s\n", Version, GoVersion, BuildTime)
 		os.Exit(0)
 	}
 

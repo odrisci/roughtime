@@ -24,7 +24,7 @@ import (
 	"log"
 	"os"
 
-	roughtime "github.com/cloudflare/roughtime"
+	roughtime "github.com/odrisci/roughtime"
 )
 
 const (

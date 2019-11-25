@@ -23,7 +23,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudflare/roughtime"
+	"github.com/odrisci/roughtime"
 )
 
 func TestMain(t *testing.T) {
