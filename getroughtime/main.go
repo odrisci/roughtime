@@ -51,11 +51,11 @@ func main() {
 		// Compute the average difference between the system's time and the
 		// Roughtime responses from the servers, rejecting responses whose radii
 		// are larger than 10 seconds.
-		delta, err := roughtime.AvgDeltaWithRadiusThresh(res, t0, 10*time.Second)
+		_, err  = roughtime.AvgDeltaWithRadiusThresh(res, t0, 10*time.Second)
 		if err != nil {
 			logger.Fatalf("error: %s", err)
 		}
-		logger.Printf("delta: %v", delta.Truncate(time.Millisecond))
+		//logger.Printf("delta: %v", delta.Truncate(time.Millisecond))
 		os.Exit(0)
 	}
 

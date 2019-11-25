@@ -262,17 +262,17 @@ func (r *Result) Error() error {
 // the response of the last, skipping requests that fail.
 func Do(servers []config.Server, attempts int, timeout time.Duration, prev *Roughtime) []Result {
 	results := make([]Result, len(servers))
-	var delay time.Duration
+	//var delay time.Duration
 	for i, _ := range servers {
 		start := time.Now()
 		srv := &servers[i]
 		rt, err := Get(srv, attempts, timeout, prev)
-		delay = time.Since(start)
+		//delay = time.Since(start)
 		if err == nil { // Request succeeded
-			logger.Printf("%s: %s (in %v)", srv.Name, rt, delay.Truncate(time.Millisecond))
+			//logger.Printf("%s: %s (in %v)", srv.Name, rt, delay.Truncate(time.Millisecond))
 			prev = rt
 		} else { // Request failed
-			logger.Printf("skipped %s: %s\n", srv.Name, err)
+			//logger.Printf("skipped %s: %s\n", srv.Name, err)
 		}
 		results[i].err = err
 		results[i].Roughtime = rt
@@ -318,7 +318,9 @@ func AvgDeltaWithRadiusThresh(results []Result, t0 time.Time, thresh time.Durati
 	}
 
 	ct := 0
-	var delta, delay time.Duration
+	var delta, delay, localDelta time.Duration
+    var tHat time.Time
+    defaultFormat := "2006-01-02 15:04:05.000000 UTC"
 	for _, res := range results {
 		delay += res.Delay
 		if res.Error() == nil {
@@ -332,7 +334,11 @@ func AvgDeltaWithRadiusThresh(results []Result, t0 time.Time, thresh time.Durati
 
 			// Add the delta between this time and t0, accounting for the
 			// network delay accumulated so far.
-			delta += t1.Sub(t0) - delay
+            tHat = t1.Add(-delay+res.Delay/2)
+			localDelta = t1.Sub(t0) - delay
+            delta += localDelta
+            //logger.Printf("Server %s Time Estimate: %s (%s)\n", res.Server.Name, tHat, tHat.Sub(t0).Truncate(time.Millisecond))
+            logger.Printf("%s,%s,%s,%s,%s,%s\n", res.Server.Name, t0.Format(defaultFormat), tHat.Format(defaultFormat), tHat.Sub(t0).Truncate(time.Microsecond),res.Delay,radius)
 			ct++
 		}
 	}
